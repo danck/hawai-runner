@@ -5,12 +5,17 @@ SHELL := /bin/bash
 .PHONY: clean lint
 
 ROOT := $(shell pwd)
-PACKAGE := HAWAI/repos/hawai-logginghub
-PACKAGE_NAME := hawai-logginghub
+PACKAGE := HAWAI/repos/hawai-runner
+PACKAGE_NAME := hawai-runner
 
 clean:
 	rm -rf build cover
 	rm $(PACKAGE_NAME)
+=======
+
+clean:
+	rm -rf build cover
+	rm hawai-runner
 
 build:
 	go build -v
@@ -25,3 +30,4 @@ lint:
 	golint ./...
 
 all: clean build lint test
+

@@ -1,4 +1,5 @@
 cover
-build
 hawai-runner
+build
+cover
 *.swp
