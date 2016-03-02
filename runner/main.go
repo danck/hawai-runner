@@ -1,65 +1,70 @@
 package runner
 
 import (
-	"bytes"
-	"encoding/json"
-	"io/ioutil"
-	"log"
-	"net/http"
-	"time"
+	"flag"
+	"os"
 )
 
 var (
-	serviceName    string
-	serviceAddress string
-	logfile        string
+	registryAddress = flag.String(
+		"registry-address",
+		"",
+		"Address of the service registry. Alternatively set the REGISTRY_ADDRESS environment variable")
+	logFilePath = flag.String(
+		"log-file",
+		"",
+		"Logfile of the observed application. Alternatively set the LOG_FILE_PATH environment variable")
+	externalHostPort = flag.String(
+		"external-host-port",
+		"",
+		"Port that is exposed as the external endpoint (e.g. on the docker host)Alternatively set the EXTERNAL_HOST_PORT environment variable")
+	externalHostAddress = flag.String(
+		"external-host-ip",
+		"",
+		"Exposed IP address of the host that runs this service/container. Alternatively set the EXTERNAL_HOST_IP environment variable")
+	serviceLabel = flag.String(
+		"service-label",
+		"",
+		"Label that identifies this service on the registry. Alternatively set the SERVICE_LABEL environment variable")
+	serviceArguments = flag.String(
+		"run",
+		"",
+		"Executable of the service. Pass with quotation marks if additional arguments are given.")
 )
 
-const (
-	registryAddress = "http://localhost:32000/service/"
+var (
+	loggingHubAddress string
 )
 
 func Main() {
-	go registerAndKeepAlive()
-	go observeAndPublish()
-	select {}
+	flag.Parse()
+
+	*registryAddress = takeOrElse(
+		*registryAddress, os.Getenv("REGISTRY_ADDRESS"))
+	*logFilePath = takeOrElse(
+		*logFilePath, os.Getenv("LOG_FILE_PATH"))
+	*externalHostPort = takeOrElse(
+		*externalHostPort, os.Getenv("EXTERNAL_HOST_PORT"))
+	*externalHostAddress = takeOrElse(
+		*externalHostAddress, os.Getenv("EXTERNAL_HOST_ADDRESS"))
+	*serviceLabel = takeOrElse(
+		*serviceLabe, os.Getenv("SERVICE_LABEL"))
+
+	registerService()
+	startHeartBeat()
+	startLogging()
+
+	startService
+
 }
 
-func registerAndKeepAlive() {
-	url := registryAddress + serviceName
-	service := make(map[string]string)
-
-	service["address"] = serviceAddress
-
-	jsonStr, err := json.Marshal(service)
-	if err != nil {
-		log.Fatal(err)
+// takeOrElse returns the first argument if not empty, otherwise the second
+func takeOrElse(this string, that string) string {
+	if this != "" {
+		return this
 	}
-	req, err := http.NewRequest("POST", url, bytes.NewReader(jsonStr))
-	if err != nil {
-		log.Fatal(err)
+	if that != "" {
+		return that
 	}
-	req.Header.Set("Content-Type", "application/json")
-
-	client := &http.Client{}
-	resp, err := client.Do(req)
-	if err != nil {
-		log.Fatal(err)
-	}
-	id, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer resp.Body.Close()
-	log.Printf("Registered service with id %s", string(id[:]))
-
-	ticker := time.NewTicker(time.Millisecond * 1000)
-	go func() {
-		for _ = range ticker.C {
-
-		}
-	}()
-}
-
-func observeAndPublish() {
+	return ""
 }
