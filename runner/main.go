@@ -1,70 +1,37 @@
 package runner
 
 import (
-	"flag"
-	"os"
+	"log"
+	"os/exec"
+	"strings"
+	"time"
 )
 
-var (
-	registryAddress = flag.String(
-		"registry-address",
-		"",
-		"Address of the service registry. Alternatively set the REGISTRY_ADDRESS environment variable")
-	logFilePath = flag.String(
-		"log-file",
-		"",
-		"Logfile of the observed application. Alternatively set the LOG_FILE_PATH environment variable")
-	externalHostPort = flag.String(
-		"external-host-port",
-		"",
-		"Port that is exposed as the external endpoint (e.g. on the docker host)Alternatively set the EXTERNAL_HOST_PORT environment variable")
-	externalHostAddress = flag.String(
-		"external-host-ip",
-		"",
-		"Exposed IP address of the host that runs this service/container. Alternatively set the EXTERNAL_HOST_IP environment variable")
-	serviceLabel = flag.String(
-		"service-label",
-		"",
-		"Label that identifies this service on the registry. Alternatively set the SERVICE_LABEL environment variable")
-	serviceArguments = flag.String(
-		"run",
-		"",
-		"Executable of the service. Pass with quotation marks if additional arguments are given.")
-)
-
-var (
-	loggingHubAddress string
-)
-
-func Main() {
-	flag.Parse()
-
-	*registryAddress = takeOrElse(
-		*registryAddress, os.Getenv("REGISTRY_ADDRESS"))
-	*logFilePath = takeOrElse(
-		*logFilePath, os.Getenv("LOG_FILE_PATH"))
-	*externalHostPort = takeOrElse(
-		*externalHostPort, os.Getenv("EXTERNAL_HOST_PORT"))
-	*externalHostAddress = takeOrElse(
-		*externalHostAddress, os.Getenv("EXTERNAL_HOST_ADDRESS"))
-	*serviceLabel = takeOrElse(
-		*serviceLabe, os.Getenv("SERVICE_LABEL"))
-
-	registerService()
-	startHeartBeat()
-	startLogging()
-
-	startService
-
+func init() {
+	loadConfig()
 }
 
-// takeOrElse returns the first argument if not empty, otherwise the second
-func takeOrElse(this string, that string) string {
-	if this != "" {
-		return this
+func Main() {
+	//registerService()
+	startLogging()
+	initHeartbeat()
+
+	tokens := strings.Fields(*serviceCommand)
+	head := tokens[0]
+	arguments := tokens[1:len(tokens)]
+
+	//retries := 0
+	// Run the guest service in an infinite loop
+	for {
+		startDelayedHeartbeat()
+		cmd := exec.Command(head, arguments...)
+		log.Println("Executing service command", *serviceCommand)
+		out, err := cmd.Output()
+		stopHeartbeat()
+		if err != nil {
+			log.Println("Error:", err.Error)
+		}
+		log.Println(string(out[:]))
+		time.Sleep(time.Second * 2)
 	}
-	if that != "" {
-		return that
-	}
-	return ""
 }
