@@ -11,9 +11,19 @@ func init() {
 	loadConfig()
 }
 
+var (
+	streamer *messageStreamer
+	fw       *fileWatcher
+)
+
 func Main() {
 	//registerService()
-	startLogging()
+	fw = newFileWatcher(config.logFile)
+	fw.startWatching()
+
+	streamer, _ = newMessageStreamer()
+	streamer.startStreaming()
+
 	initHeartbeat()
 
 	tokens := strings.Fields(*serviceCommand)

@@ -15,24 +15,28 @@ type fileWatcher struct {
 	changed    chan bool
 }
 
-func (fw *fileWatcher) startWatching() {
-	loggingService, err := getServiceAddress("logging")
-	if err != nil {
-		log.Println("No logging service available")
+func newFileWatcher(file string) *fileWatcher {
+	return &fileWatcher{
+		file:       file,
+		offset:     int64(0),
+		bufferSize: 4096,
+		changed:    make(chan bool, 16),
 	}
-	fw.watcher, err = fsnotify.NewWatcher()
+}
+
+func (fw *fileWatcher) startWatching() {
+	watcher, err := fsnotify.NewWatcher()
 	if err != nil {
 		log.Fatal(err)
 	}
+	fw.watcher = watcher
 	go fw.notifier()
 	go fw.streamer()
 
-	err = fw.watcher.Add(*logFilePath)
+	err = fw.watcher.Add(fw.file)
 	if err != nil {
 		log.Fatal(err)
 	}
-
-	select {}
 }
 
 func (fw *fileWatcher) notifier() {
@@ -65,7 +69,7 @@ func (fw *fileWatcher) streamer() {
 				log.Println("Error while reading logfile:", err.Error())
 			}
 			fw.offset += int64(n)
-			logStream <- buffer
+			streamer.logStream <- buffer
 			if err == io.EOF {
 				break
 			}

@@ -11,10 +11,10 @@ var (
 		"registry-address",
 		"",
 		"Address of the service registry. Alternatively set the REGISTRY_ADDRESS environment variable")
-	logFilePath = flag.String(
+	logFile = flag.String(
 		"log-file",
 		"",
-		"Logfile of the observed application. Alternatively set the LOG_FILE_PATH environment variable")
+		"Logfile of the observed application.\nAlternatively set the LOG_FILE environment variable")
 	externalHostPort = flag.String(
 		"external-host-port",
 		"",
@@ -36,7 +36,7 @@ var (
 var (
 	config struct {
 		registryAddress     string
-		logFilePath         string
+		logFile             string
 		externalHostPort    string
 		externalHostAddress string
 		serviceLabel        string
@@ -50,8 +50,8 @@ func loadConfig() {
 
 	config.registryAddress = takeOrElse(
 		*registryAddress, os.Getenv("REGISTRY_ADDRESS"))
-	config.logFilePath = takeOrElse(
-		*logFilePath, os.Getenv("LOG_FILE_PATH"))
+	config.logFile = takeOrElse(
+		*logFile, os.Getenv("LOG_FILE"))
 	config.externalHostPort = takeOrElse(
 		*externalHostPort, os.Getenv("EXTERNAL_HOST_PORT"))
 	config.externalHostAddress = takeOrElse(
