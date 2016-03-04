@@ -1,7 +1,7 @@
 package main
 
 import (
-	"HAWAI/repos/hawai-runner/runner"
+	"gitlab.com/danck/hawai-runner"
 )
 
 func main() {
