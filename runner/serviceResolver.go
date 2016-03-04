@@ -15,7 +15,7 @@ type services struct {
 // getServiceAddress queries the service registry for the available addresses
 // of a given label
 func resolveService(label string) (string, error) {
-	serviceURL, err := url.Parse(*registryAddress + "/" + label)
+	serviceURL, err := url.Parse(config.registryAddress + "/" + label)
 	if err != nil {
 		log.Fatal("Error while getting an service address", err.Error())
 	}
