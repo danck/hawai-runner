@@ -37,7 +37,12 @@ func (fw *fileWatcher) startWatching() {
 
 	err = fw.watcher.Add(fw.file)
 	if err != nil {
-		log.Fatal(err)
+		log.Printf("Logfile not found: %v", err)
+		log.Printf("Creating empty file at: %s", fw.file)
+		_, err := os.Create(fw.file)
+		if err != nil {
+			log.Fatal("Failed to create empty logfile", err.Error())
+		}
 	}
 }
 
