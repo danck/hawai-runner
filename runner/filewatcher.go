@@ -13,14 +13,16 @@ type fileWatcher struct {
 	offset     int64
 	bufferSize int
 	changed    chan bool
+	outStream  chan []byte
 }
 
-func newFileWatcher(file string) *fileWatcher {
+func newFileWatcher(file string, out chan []byte) *fileWatcher {
 	return &fileWatcher{
 		file:       file,
 		offset:     int64(0),
 		bufferSize: 4096,
 		changed:    make(chan bool, 16),
+		outStream:  out,
 	}
 }
 
@@ -69,7 +71,7 @@ func (fw *fileWatcher) streamer() {
 				log.Println("Error while reading logfile:", err.Error())
 			}
 			fw.offset += int64(n)
-			streamer.logStream <- buffer
+			fw.outStream <- buffer
 			if err == io.EOF {
 				break
 			}

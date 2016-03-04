@@ -11,20 +11,20 @@ func init() {
 	loadConfig()
 }
 
-var (
-	streamer *messageStreamer
-	fw       *fileWatcher
-)
-
 func Main() {
-	//registerService()
-	fw = newFileWatcher(config.logFile)
-	fw.startWatching()
-
-	streamer, _ = newMessageStreamer()
+	streamer, err := newMessageStreamer()
+	if err != nil {
+		log.Fatal(err)
+	}
 	streamer.startStreaming()
 
-	initHeartbeat()
+	hb, err := newHeartbeater()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	fw := newFileWatcher(config.logFile, streamer.logStream)
+	fw.startWatching()
 
 	tokens := strings.Fields(*serviceCommand)
 	head := tokens[0]
@@ -33,15 +33,16 @@ func Main() {
 	//retries := 0
 	// Run the guest service in an infinite loop
 	for {
-		startDelayedHeartbeat()
+		hb.startBeating(1000)
 		cmd := exec.Command(head, arguments...)
 		log.Println("Executing service command", *serviceCommand)
-		out, err := cmd.Output()
-		stopHeartbeat()
+		err := cmd.Start()
 		if err != nil {
 			log.Println("Error:", err.Error)
 		}
-		log.Println(string(out[:]))
+		err = cmd.Wait()
+		log.Printf("Service exited with %v", err)
+		hb.stopBeating()
 		time.Sleep(time.Second * 2)
 	}
 }

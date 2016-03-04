@@ -4,55 +4,63 @@ import (
 	"bytes"
 	"encoding/json"
 	"log"
-	"net"
 	"net/http"
 	"net/url"
 	"time"
 )
 
-var (
-	heartbeater struct {
-		ticker          *time.Ticker
-		registryAddress string
-		connection      *net.Conn
-		active          bool
-	}
+type heartbeater struct {
+	ticker          *time.Ticker
+	registryAddress string
+	active          bool
+	service         service
+}
 
-	service struct {
-		ID      string `json:"id"`
-		Address string `json:"address"`
-	}
-)
+type service struct {
+	ID      string `json:"id"`
+	Address string `json:"address"`
+}
 
-func initHeartbeat() {
-	heartbeater.ticker = time.NewTicker(time.Millisecond * 1000)
-	heartbeater.active = true
-	heartbeater.registryAddress = config.registryAddress
+func newHeartbeater() (*heartbeater, error) {
 	thisAddress := config.externalHostAddress + ":" + config.externalHostPort
 	thisURL, err := url.Parse(thisAddress)
 	if err != nil {
-		log.Fatal(err.Error())
+		log.Fatal("Illegal address of the external endpoint:", err.Error())
 	}
-	service.Address = thisURL.String()
 
-	go heartBeatLoop()
+	var registry *url.URL
+	registry, err = url.Parse(config.registryAddress)
+	if err != nil {
+		log.Fatal("Illegal address of the service registry:", err.Error())
+	}
+
+	return &heartbeater{
+		ticker:          time.NewTicker(time.Millisecond * 1000),
+		registryAddress: registry.String(),
+		active:          false,
+		service: service{
+			ID:      "unassigned",
+			Address: thisURL.String(),
+		},
+	}, nil
 }
 
-func startDelayedHeartbeat() {
-	time.Sleep(time.Millisecond * 500)
-	heartbeater.active = true
+func (hb *heartbeater) startBeating(delay int) {
+	time.Sleep(time.Millisecond * time.Duration(delay))
+	hb.active = true
+	go hb.heartBeatLoop()
 }
 
-func stopHeartbeat() {
-	heartbeater.active = true //false
+func (hb *heartbeater) stopBeating() {
+	hb.active = true //TODO(danck):false
 }
 
-func heartBeatLoop() {
+func (hb *heartbeater) heartBeatLoop() {
 	for {
-		_ = <-heartbeater.ticker.C
+		_ = <-hb.ticker.C
 		log.Println("Sending Heartbeat")
-		if heartbeater.active {
-			this, _ := json.Marshal(service)
+		if hb.active {
+			this, _ := json.Marshal(hb.service)
 			reader := *bytes.NewReader(this)
 			resp, err := http.Post(config.registryAddress+"/"+config.serviceLabel, "application/json", &reader)
 			if err != nil {
@@ -66,7 +74,7 @@ func heartBeatLoop() {
 				log.Println("Error while decoding registry response:", err.Error())
 				continue
 			}
-			err = decoder.Decode(&service)
+			err = decoder.Decode(&hb.service)
 			if err != nil {
 				log.Println(err.Error())
 				continue
