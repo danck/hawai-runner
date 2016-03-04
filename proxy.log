@@ -1,3 +1,9 @@
 SuiteCRM-Proxy2016/03/04 12:42:47 Connection Query: http://192.168.29.131/service/v4_1/rest.php?input_type=json&method=login&response_type=json&rest_data=%7B%22user_auth%22%3A%7B%22user_name%22%3A%22admin%22%2C%22password%22%3A%2221232f297a57a5a743894a0e4a801fc3%22%7D%2C%22application_name%22%3A%22SuiteCRM+Adapter%22%7D
 SuiteCRM-Proxy2016/03/04 12:42:47 Connection established. ID 2s9mtilvlmio8dmu4uhplnm697
 SuiteCRM-Proxy2016/03/04 12:42:47 Starting to listen on :8080
+SuiteCRM-Proxy2016/03/04 13:12:16 Connection Query: http://192.168.29.131/service/v4_1/rest.php?input_type=json&method=login&response_type=json&rest_data=%7B%22user_auth%22%3A%7B%22user_name%22%3A%22admin%22%2C%22password%22%3A%2221232f297a57a5a743894a0e4a801fc3%22%7D%2C%22application_name%22%3A%22SuiteCRM+Adapter%22%7D
+SuiteCRM-Proxy2016/03/04 13:12:16 Connection established. ID 4d543katgjv6bnhqbvnt12efl0
+SuiteCRM-Proxy2016/03/04 13:12:16 Starting to listen on :8080
+SuiteCRM-Proxy2016/03/04 13:28:30 Connection Query: http://192.168.29.131/service/v4_1/rest.php?input_type=json&method=login&response_type=json&rest_data=%7B%22user_auth%22%3A%7B%22user_name%22%3A%22admin%22%2C%22password%22%3A%2221232f297a57a5a743894a0e4a801fc3%22%7D%2C%22application_name%22%3A%22SuiteCRM+Adapter%22%7D
+SuiteCRM-Proxy2016/03/04 13:28:30 Connection established. ID 4q7366ime4hnp2947bo3o924v7
+SuiteCRM-Proxy2016/03/04 13:28:30 Starting to listen on :8080

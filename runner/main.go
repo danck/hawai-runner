@@ -26,7 +26,7 @@ func Main() {
 	fw := newFileWatcher(config.logFile, streamer.logStream)
 	fw.startWatching()
 
-	tokens := strings.Fields(*serviceCommand)
+	tokens := strings.Fields(config.serviceCommand)
 	head := tokens[0]
 	arguments := tokens[1:len(tokens)]
 
@@ -35,7 +35,7 @@ func Main() {
 	for {
 		hb.startBeating(1000)
 		cmd := exec.Command(head, arguments...)
-		log.Println("Executing service command", *serviceCommand)
+		log.Println("Executing service command", config.serviceCommand)
 		err := cmd.Start()
 		if err != nil {
 			log.Println("Error:", err.Error)

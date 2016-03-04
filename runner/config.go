@@ -30,7 +30,7 @@ var (
 	serviceCommand = flag.String(
 		"run",
 		"",
-		"Executable of the service. Pass with quotation marks if additional arguments are given.")
+		"Executable of the service. Pass with quotation marks if additional arguments are given. Alternative: set env SERVICE_COMMAND")
 )
 
 var (
@@ -58,6 +58,8 @@ func loadConfig() {
 		*externalHostAddress, os.Getenv("EXTERNAL_HOST_ADDRESS"))
 	config.serviceLabel = takeOrElse(
 		*serviceLabel, os.Getenv("SERVICE_LABEL"))
+	config.serviceCommand = takeOrElse(
+		*serviceCommand, os.Getenv("SERVICE_COMMAND"))
 }
 
 // takeOrElse returns the first argument if not empty, otherwise the second

@@ -1,5 +1,6 @@
 cover
 hawai-runner
 build
+test.sh
 cover
 *.swp
