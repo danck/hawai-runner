@@ -2,6 +2,7 @@ package runner
 
 import (
 	"bufio"
+	"io"
 	"log"
 	"os/exec"
 	"strings"
@@ -41,21 +42,24 @@ func Main() {
 		if err != nil {
 			log.Println("Error:", err.Error)
 		}
-		go func() {
-			for {
-				log.Println("before reading")
-				r := bufio.NewReader(stderr)
-				out, err := r.ReadString('\n')
-				log.Println("after reading")
-				if err != nil {
-					break
-				}
-				log.Printf("%s", out)
-			}
-		}()
+		logStderr(stderr)
 		err = cmd.Wait()
 		log.Printf("Service exited with %v", err)
 		hb.stopBeating()
 		time.Sleep(time.Second * 2)
 	}
+}
+
+func logStderr(stderr io.ReadCloser) {
+	go func() {
+		for {
+			r := bufio.NewReader(stderr)
+			out, err := r.ReadString('\n')
+			if err != nil {
+				break
+			}
+			log.Printf("%s", out)
+		}
+	}()
+
 }
