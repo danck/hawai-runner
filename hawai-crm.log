@@ -1,0 +1,3 @@
+2016/03/05 09:31:08 Connection Query: http://192.168.29.131/service/v4_1/rest.php?input_type=json&method=login&response_type=json&rest_data=%7B%22user_auth%22%3A%7B%22user_name%22%3A%22admin%22%2C%22password%22%3A%2221232f297a57a5a743894a0e4a801fc3%22%7D%2C%22application_name%22%3A%22SuiteCRM+Adapter%22%7D
+2016/03/05 09:31:08 Connection established. ID 2kdsofc94phgvrq4el43d4p3o6
+2016/03/05 09:31:08 Starting to listen on :8080

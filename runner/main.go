@@ -1,6 +1,7 @@
 package runner
 
 import (
+	"io/ioutil"
 	"log"
 	"os/exec"
 	"strings"
@@ -30,16 +31,25 @@ func Main() {
 	head := tokens[0]
 	arguments := tokens[1:len(tokens)]
 
-	//retries := 0
 	// Run the guest service in an infinite loop
 	for {
 		hb.startBeating(1000)
 		cmd := exec.Command(head, arguments...)
+		stderr, err := cmd.StderrPipe()
 		log.Println("Executing service command", config.serviceCommand)
-		err := cmd.Start()
+		err = cmd.Start()
 		if err != nil {
 			log.Println("Error:", err.Error)
 		}
+		go func() {
+			for {
+				out, err := ioutil.ReadAll(stderr)
+				if err != nil {
+					break
+				}
+				log.Printf("%s", out)
+			}
+		}()
 		err = cmd.Wait()
 		log.Printf("Service exited with %v", err)
 		hb.stopBeating()
