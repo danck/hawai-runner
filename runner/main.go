@@ -1,7 +1,7 @@
 package runner
 
 import (
-	"io/ioutil"
+	"bufio"
 	"log"
 	"os/exec"
 	"strings"
@@ -43,7 +43,10 @@ func Main() {
 		}
 		go func() {
 			for {
-				out, err := ioutil.ReadAll(stderr)
+				log.Println("before reading")
+				r := bufio.NewReader(stderr)
+				out, err := r.ReadString('\n')
+				log.Println("after reading")
 				if err != nil {
 					break
 				}

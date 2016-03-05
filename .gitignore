@@ -1,4 +1,5 @@
 cover
+*.log
 hawai-runner
 build
 test.sh
