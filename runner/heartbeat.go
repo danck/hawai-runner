@@ -22,7 +22,7 @@ type service struct {
 }
 
 func newHeartbeater() (*heartbeater, error) {
-	thisAddress := config.externalHostAddress + ":" + config.externalHostPort
+	thisAddress := config.protocolScheme + "://" + config.externalHostAddress + ":" + config.externalHostPort
 	thisURL, err := url.Parse(thisAddress)
 	if err != nil {
 		log.Fatal("Illegal address of the external endpoint:", err.Error())

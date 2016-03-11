@@ -15,6 +15,10 @@ var (
 		"log-file",
 		"",
 		"Logfile of the observed application.\nAlternatively set the LOG_FILE environment variable")
+	protocolScheme = flag.String(
+		"protocol-scheme",
+		"http",
+		"Network protocol")
 	externalHostPort = flag.String(
 		"external-host-port",
 		"",
@@ -37,6 +41,7 @@ var (
 	config struct {
 		registryAddress     string
 		logFile             string
+		protocolScheme      string
 		externalHostPort    string
 		externalHostAddress string
 		serviceLabel        string
@@ -52,6 +57,8 @@ func loadConfig() {
 		*registryAddress, os.Getenv("REGISTRY_ADDRESS"))
 	config.logFile = takeOrElse(
 		*logFile, os.Getenv("LOG_FILE"))
+	config.protocolScheme = takeOrElse(
+		*protocolScheme, os.Getenv("PROTOCOL_SCHEME"))
 	config.externalHostPort = takeOrElse(
 		*externalHostPort, os.Getenv("EXTERNAL_HOST_PORT"))
 	config.externalHostAddress = takeOrElse(

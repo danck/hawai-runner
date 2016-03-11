@@ -11,7 +11,6 @@ PACKAGE_NAME := hawai-runner
 clean:
 	rm -rf build cover
 	rm $(PACKAGE_NAME)
-=======
 
 clean:
 	rm -rf build cover
