@@ -1,8 +1,10 @@
 package runner
 
 import (
+	"bytes"
 	"errors"
 	"log"
+	"net/http"
 )
 
 const (
@@ -36,7 +38,12 @@ func (ms *messageStreamer) stream() {
 	for {
 		select {
 		case msg := <-ms.logStream:
-			log.Println(string(msg[:]))
+			body := bytes.NewReader(msg)
+			resp, err := http.Post(ms.loggingEndpoint, "application/text", body)
+			if err != nil {
+				log.Printf("Failed to post message. Reason: %s", err.Error())
+			}
+			defer resp.Body.Close()
 		}
 	}
 }

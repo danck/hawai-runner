@@ -1,6 +1,6 @@
 #/bin/bash
 export EXTERNAL_HOST_ADDRESS=192.168.29.142
-export EXTERNAL_HOST_PORT=20000
+export EXTERNAL_HOST_PORT=20099
 export LOG_FILE=hawai-logging.log
 export SERVICE_COMMAND="/home/daniel/projects/src/gitlab.com/danck/hawai-logginghub/hawai-logginghub"
 export SERVICE_LABEL=logging

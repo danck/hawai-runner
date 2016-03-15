@@ -1,3 +1,27 @@
 2016/03/05 09:31:08 Connection Query: http://192.168.29.131/service/v4_1/rest.php?input_type=json&method=login&response_type=json&rest_data=%7B%22user_auth%22%3A%7B%22user_name%22%3A%22admin%22%2C%22password%22%3A%2221232f297a57a5a743894a0e4a801fc3%22%7D%2C%22application_name%22%3A%22SuiteCRM+Adapter%22%7D
 2016/03/05 09:31:08 Connection established. ID 2kdsofc94phgvrq4el43d4p3o6
 2016/03/05 09:31:08 Starting to listen on :8080
+2016/03/15 05:54:58 Connection Query: http://192.168.29.131/service/v4_1/rest.php?input_type=json&method=login&response_type=json&rest_data=%7B%22user_auth%22%3A%7B%22user_name%22%3A%22admin%22%2C%22password%22%3A%2221232f297a57a5a743894a0e4a801fc3%22%7D%2C%22application_name%22%3A%22SuiteCRM+Adapter%22%7D
+2016/03/15 05:54:58 Connection established. ID 8vbjsp5c37pp1ksk6dt1b6rjl1
+2016/03/15 05:54:58 Starting to listen on :8080
+2016/03/15 05:54:58 listen tcp :8080: bind: address already in use
+2016/03/15 05:55:01 Connection Query: http://192.168.29.131/service/v4_1/rest.php?input_type=json&method=login&response_type=json&rest_data=%7B%22user_auth%22%3A%7B%22user_name%22%3A%22admin%22%2C%22password%22%3A%2221232f297a57a5a743894a0e4a801fc3%22%7D%2C%22application_name%22%3A%22SuiteCRM+Adapter%22%7D
+2016/03/15 05:55:01 Connection established. ID 8peo8iasijpu8vjg4hpqcpq9a1
+2016/03/15 05:55:01 Starting to listen on :8080
+2016/03/15 05:55:01 listen tcp :8080: bind: address already in use
+2016/03/15 05:55:04 Connection Query: http://192.168.29.131/service/v4_1/rest.php?input_type=json&method=login&response_type=json&rest_data=%7B%22user_auth%22%3A%7B%22user_name%22%3A%22admin%22%2C%22password%22%3A%2221232f297a57a5a743894a0e4a801fc3%22%7D%2C%22application_name%22%3A%22SuiteCRM+Adapter%22%7D
+2016/03/15 05:55:04 Connection established. ID kcanqr0732oi5olak3c6akbi84
+2016/03/15 05:55:04 Starting to listen on :8080
+2016/03/15 05:55:04 listen tcp :8080: bind: address already in use
+2016/03/15 05:55:07 Connection Query: http://192.168.29.131/service/v4_1/rest.php?input_type=json&method=login&response_type=json&rest_data=%7B%22user_auth%22%3A%7B%22user_name%22%3A%22admin%22%2C%22password%22%3A%2221232f297a57a5a743894a0e4a801fc3%22%7D%2C%22application_name%22%3A%22SuiteCRM+Adapter%22%7D
+2016/03/15 05:55:07 Connection established. ID 75drkejb70bkkd6teob5ad0nl5
+2016/03/15 05:55:07 Starting to listen on :8080
+2016/03/15 05:55:07 listen tcp :8080: bind: address already in use
+2016/03/15 05:55:10 Connection Query: http://192.168.29.131/service/v4_1/rest.php?input_type=json&method=login&response_type=json&rest_data=%7B%22user_auth%22%3A%7B%22user_name%22%3A%22admin%22%2C%22password%22%3A%2221232f297a57a5a743894a0e4a801fc3%22%7D%2C%22application_name%22%3A%22SuiteCRM+Adapter%22%7D
+2016/03/15 05:55:10 Connection established. ID otol2d64aioct2hnrengnp10i4
+2016/03/15 05:55:10 Starting to listen on :8080
+2016/03/15 05:55:10 listen tcp :8080: bind: address already in use
+2016/03/15 05:55:13 Connection Query: http://192.168.29.131/service/v4_1/rest.php?input_type=json&method=login&response_type=json&rest_data=%7B%22user_auth%22%3A%7B%22user_name%22%3A%22admin%22%2C%22password%22%3A%2221232f297a57a5a743894a0e4a801fc3%22%7D%2C%22application_name%22%3A%22SuiteCRM+Adapter%22%7D
+2016/03/15 05:55:13 Connection established. ID 4vc33ia2pqhpeilbu00rsjlgf4
+2016/03/15 05:55:13 Starting to listen on :8080
+2016/03/15 05:55:13 listen tcp :8080: bind: address already in use
