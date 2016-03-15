@@ -8,8 +8,13 @@ import (
 	"net/url"
 )
 
-type services struct {
-	list []string `json:"services"`
+type serviceResponse struct {
+	List []Service `json:"services"`
+}
+
+type Service struct {
+	ID      string `json:"id"`
+	Address string `json:"address"`
 }
 
 // getServiceAddress queries the service registry for the available addresses
@@ -25,15 +30,15 @@ func resolveService(label string) (string, error) {
 	}
 	defer resp.Body.Close()
 
-	var serviceList services
+	var serviceList serviceResponse
 	err = json.NewDecoder(resp.Body).Decode(&serviceList)
 	if err != nil {
 		log.Fatal("Error while decoding response from service registry", err.Error())
 	}
-	if len(serviceList.list) == 0 {
+	if len(serviceList.List) == 0 {
 		return "", errors.New("No services available")
 	}
-	chosenAddress := serviceList.list[0]
+	chosenAddress := serviceList.List[0].Address
 
 	return chosenAddress, nil
 }
