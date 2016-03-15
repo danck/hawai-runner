@@ -1,6 +1,7 @@
 package runner
 
 import (
+	"errors"
 	"log"
 )
 
@@ -17,7 +18,7 @@ type messageStreamer struct {
 func newMessageStreamer() (*messageStreamer, error) {
 	endpoint, err := resolveService("logging")
 	if err != nil {
-		return nil, errors.New("Can't resolve logging endpoint", err.Error())
+		return nil, errors.New("Can't resolve logging endpoint" + err.Error())
 	}
 	endpoint = endpoint + apiPrefix + apiChannel
 	log.Println("Logging endpoint:", endpoint)
