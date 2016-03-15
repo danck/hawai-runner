@@ -13,7 +13,7 @@ type serviceResponse struct {
 }
 
 type Service struct {
-	ID      string `json:"id"`
+	//ID      int    `json:"id"`
 	Address string `json:"address"`
 }
 
