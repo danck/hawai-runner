@@ -42,7 +42,7 @@ func Main() {
 		if err != nil {
 			log.Println("Error:", err.Error)
 		}
-		logStderr(stderr)
+		logStderr(stderr, streamer)
 		err = cmd.Wait()
 		log.Printf("Service exited with %v", err)
 		hb.stopBeating()
@@ -50,16 +50,19 @@ func Main() {
 	}
 }
 
-func logStderr(stderr io.ReadCloser) {
+func logStderr(stderr io.ReadCloser, ms *messageStreamer) {
+	r := bufio.NewReader(stderr)
 	go func() {
 		for {
-			r := bufio.NewReader(stderr)
 			out, err := r.ReadString('\n')
 			if err != nil {
+				errMsg := "Error while reading stderr: " + err.Error()
+				ms.logStream <- []byte(errMsg)
+				log.Println(errMsg)
 				break
 			}
+			ms.logStream <- []byte(out)
 			log.Printf("%s", out)
 		}
 	}()
-
 }
