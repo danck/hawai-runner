@@ -14,18 +14,18 @@ func init() {
 }
 
 func Main() {
-	streamer, err := newMessageStreamer()
-	if err != nil {
-		log.Fatal(err)
-	}
-	streamer.startStreaming()
-
 	hb, err := newHeartbeater()
 	if err != nil {
 		log.Fatal(err)
 	}
 	hb.startBeating(0)
 	time.Sleep(1 * time.Second)
+
+	streamer, err := newMessageStreamer()
+	if err != nil {
+		log.Fatal(err)
+	}
+	streamer.startStreaming()
 
 	fw := newFileWatcher(config.logFile, streamer.logStream)
 	fw.startWatching()
