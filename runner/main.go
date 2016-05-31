@@ -24,6 +24,8 @@ func Main() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	hb.startBeating(0)
+	time.Sleep(1 * time.Second)
 
 	fw := newFileWatcher(config.logFile, streamer.logStream)
 	fw.startWatching()
@@ -32,6 +34,7 @@ func Main() {
 	head := tokens[0]
 	arguments := tokens[1:len(tokens)]
 
+	hb.stopBeating()
 	// Run the guest service in an infinite loop
 	for {
 		hb.startBeating(1000)
